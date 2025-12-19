@@ -8,6 +8,8 @@ from rules.sum_rule import SumRule
 from rules.range_limit_rule import RangeLimitRule
 from rules.no_consecutive_rule import NoConsecutiveRule
 from rules.range_gap_rule import RangeGapRule
+from rules.even_rule import AllEvenRule
+from rules.banned_rule import BannedNumberRule
 from .menu_ui import MainMenuUI
 
 
@@ -425,14 +427,49 @@ class BaseballGUI:
         self.gm.rules.clear()
 
         if self.rule_mode == "rule":
-            candidates = [
-                SumRule(12 if self.digit_length == 3 else 18),
-                RangeLimitRule(min_value=2),
-                RangeLimitRule(max_value=7),
-                NoConsecutiveRule(),
-                RangeGapRule(3),
-            ]
-            self.gm.rules.add_rule(random.choice(candidates))
+            candidates = []
+
+            # 합 제한 룰
+            if self.digit_length == 3:
+                candidates.append(
+                    lambda: SumRule(random.randint(10, 15))
+                )
+            else:
+                candidates.append(
+                    lambda: SumRule(random.randint(16, 22))
+                )
+
+            # 최소 / 최대 숫자 제한
+            candidates.append(
+                lambda: RangeLimitRule(min_value=random.randint(1, 3))
+            )
+            candidates.append(
+                lambda: RangeLimitRule(max_value=random.randint(6, 8))
+            )
+
+            # 연속 숫자 금지
+            candidates.append(
+                lambda: NoConsecutiveRule()
+            )
+
+            # 최대-최소 차이
+            candidates.append(
+                lambda: RangeGapRule(random.randint(2, 5))
+            )
+
+            # 짝수 (모든 숫자가 짝수)
+            candidates.append(
+                lambda: AllEvenRule()
+)
+
+            # 한 개의 숫자 금지
+            candidates.append(
+                lambda: BannedNumberRule([random.randint(0, 9)])
+            )
+
+            # 룰 카드 "한 장" 뽑기
+            rule_card= random.choice(candidates)
+            self.gm.rules.add_rule(rule_card())
 
         players = [HumanPlayer("Player 1")]
         if self.mode == "multi":
@@ -448,6 +485,7 @@ class BaseballGUI:
         else:
             self.state = "SET_P1"
             self.answer_setting_player_index = 0
+
 
     def start_game_from_menu(self, mode, rule, diff):
         self.mode = "single" if mode == "SINGLE" else "multi"

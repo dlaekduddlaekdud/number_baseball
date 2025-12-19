@@ -22,7 +22,7 @@ class RangeLimitRule(GameRule):
     def get_description(self) -> str:
         parts = []
         if self.min_value is not None:
-            parts.append(f"Min digit ≥ {self.min_value}")
+            parts.append(f"Min digit >= {self.min_value}")
         if self.max_value is not None:
-            parts.append(f"Max digit ≤ {self.max_value}")
+            parts.append(f"Max digit <= {self.max_value}")
         return " / ".join(parts) if parts else "Range limit rule"

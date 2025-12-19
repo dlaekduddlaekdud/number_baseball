@@ -9,4 +9,4 @@ class SumRule(GameRule):
         return sum(numbers) >= self.min_total
 
     def get_description(self) -> str:
-        return f"Sum of digits ≥ {self.min_total}"
+        return f"Sum of digits >= {self.min_total}"

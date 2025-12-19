@@ -8,4 +8,4 @@ class BannedNumberRule(GameRule):
         return len(self.banned & set(numbers)) == 0
 
     def get_description(self) -> str:
-        return f"숫자 {sorted(list(self.banned))}은(는) 사용할 수 없습니다."
+        return f"You cannot use numbers {sorted(list(self.banned))}."

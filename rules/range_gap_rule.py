@@ -12,4 +12,4 @@ class RangeGapRule(GameRule):
         return (max(numbers) - min(numbers)) >= self.min_gap
 
     def get_description(self) -> str:
-        return f"Max digit - Min digit ≥ {self.min_gap}"
+        return f"Max digit - Min digit >= {self.min_gap}"
